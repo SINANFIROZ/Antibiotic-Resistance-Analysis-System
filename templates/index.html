@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antibiotic Resistance Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Antibiotic Resistance Prediction</h2>
+
+    <div class="container {% if prediction %}result-visible{% endif %}">
+        <div class="form-container">
+            <form method="POST">
+                <label for="microbe">Select Microbe:</label>
+                <select name="microbe" required>
+                    <option value="" disabled selected>Select Microbe</option>
+                    {% for microbe in microbes %}
+                        <option value="{{ microbe }}" {% if microbe == selected_microbe %}selected{% endif %}>{{ microbe }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="antibiotic">Select Antibiotic:</label>
+                <select name="antibiotic" required>
+                    <option value="" disabled selected>Select Antibiotic</option>
+                    {% for antibiotic in antibiotics %}
+                        <option value="{{ antibiotic }}" {% if antibiotic == selected_antibiotic %}selected{% endif %}>{{ antibiotic }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="email">Patient Email:</label>
+                <input type="email" name="email" required>
+
+
+                <button type="submit">Predict</button>
+            </form>
+        </div>
+
+        {% if prediction %}
+        <div class="result-container">
+            <h3>Prediction Result:</h3>
+            <p>{{ prediction }}</p>
+
+            {% if alternatives %}
+                <h3>Alternative Antibiotics:</h3>
+                <ul>
+                    {% for alt in alternatives %}
+                        <li>{{ alt }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

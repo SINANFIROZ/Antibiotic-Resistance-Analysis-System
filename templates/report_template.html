@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h2 { color: #2E86C1; }
+    </style>
+</head>
+<body>
+    <h2>Antibiotic Resistance Report</h2>
+    <p><strong>Microbe found in the sample:</strong> {{ microbe }}</p>
+    <p><strong>Antibiotic prescribed by doctor:</strong> {{ antibiotic }}</p>
+    <p><strong>Prediction Result:</strong> {{ result }}</p>
+
+    {% if alternatives %}
+        <p><strong>Suggested Alternatives:</strong></p>
+        <ul>
+            {% for alt in alternatives %}
+                <li>{{ alt }}</li>
+            {% endfor %}
+        </ul>
+        <p><strong>Note:</strong> Please consult a healthcare professional before making any changes to your treatment plan or before trying the alternatives</p>
+    {% endif %}
+</body>
+</html>
