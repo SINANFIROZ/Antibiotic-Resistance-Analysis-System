@@ -10,7 +10,7 @@ This project aims to predict whether a microbe is resistant or susceptible to a 
 - 🌐 Flask (for backend API)
 - 🖥️ HTML, CSS, JavaScript (for frontend)
 - 📊 Machine Learning (XGBoost classifier)
-- 📦 SQLite or CSV (for dataset handling)
+- 📦 CSV (for dataset handling)
 
 🚀 How to Run
 
@@ -21,10 +21,11 @@ cd antibiotic-resistance-prediction
 
 2.Setup and activate virtual environment(Optional)
 python -m venv venv
-# Activate the environment:
-# For Linux/Mac:
+3.Activate the environment:
+For Linux/Mac:
 source venv/bin/activate
-# For Windows:
+
+For Windows:
 venv\Scripts\activate
 
 3.Run the flask backend
