@@ -61,8 +61,8 @@ def generate_pdf(microbe, antibiotic, result, alternatives):
     return pdf_path
 
 def send_email(to_email, message, attachment_path):
-    sender = "antibiotictestresult@gmail.com"
-    password = "vpam jami ipaz wuox"
+    sender = "[Replace with your mail id]"
+    password = "[Replace with your secret passkey]"
 
     msg = MIMEMultipart()
     msg["From"] = sender
