@@ -25,7 +25,7 @@ async def build_dashboard(db: AsyncSession) -> DashboardResponse:
     total_predictions = len(predictions)
     resistant_count = sum(1 for item in predictions if item.prediction_label == PredictionLabel.RESISTANT)
     susceptible_count = total_predictions - resistant_count
-    average_confidence = sum(item.confidence_score for item in predictions) / total_predictions if predictions else 0.0
+    average_confidence = sum(item.confidence_score for item in predictions) / total_predictions if total_predictions > 0 else 0.0
 
     metrics = [
         MetricCard(label='Total predictions', value=total_predictions, change=12.4),

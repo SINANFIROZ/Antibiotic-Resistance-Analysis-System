@@ -45,6 +45,6 @@ async def seed_reference_catalog(db: AsyncSession) -> None:
 
     for antibiotic_name in _discover_legacy_antibiotics():
         if antibiotic_name not in antibiotics_in_db:
-            db.add(Antibiotic(name=antibiotic_name, antibiotic_class='legacy-classifier'))
+            db.add(Antibiotic(name=antibiotic_name, antibiotic_class='unclassified'))
 
     await db.commit()

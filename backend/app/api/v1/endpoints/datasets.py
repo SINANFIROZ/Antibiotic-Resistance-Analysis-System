@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, File, Form, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -27,4 +27,7 @@ async def upload_dataset(
     db: AsyncSession = Depends(get_db_session),
     current_user: User = Depends(require_roles(UserRole.ADMIN, UserRole.RESEARCHER, UserRole.LAB_TECHNICIAN)),
 ):
-    return await store_dataset(db, file, current_user, notes)
+    try:
+        return await store_dataset(db, file, current_user, notes)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error

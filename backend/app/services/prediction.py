@@ -13,6 +13,14 @@ from app.schemas.prediction import PredictionRequest
 from app.services.audit import create_audit_log
 
 settings = get_settings()
+LEGACY_EXPLANATION_TEMPLATE = (
+    'Legacy ensemble scored {microbe_name} against {antibiotic_name} with a resistant probability of '
+    '{probability:.2%}. Confidence reflects distance from the decision threshold and available historical signal.'
+)
+FALLBACK_EXPLANATION_TEMPLATE = (
+    'Fallback heuristic used for {microbe_name} and {antibiotic_name} because {reason}. '
+    'Probability is derived from baseline resistance prevalence and should be validated with a trained registry model.'
+)
 
 
 @dataclass
@@ -75,9 +83,10 @@ class LegacyModelGateway:
 
         label = PredictionLabel.RESISTANT if prediction == 1 else PredictionLabel.SUSCEPTIBLE
         confidence = round(abs(probability - 0.5) * 2, 4)
-        explanation = (
-            f'Legacy ensemble scored {microbe_name} against {antibiotic_name} with a resistant probability of '
-            f'{probability:.2%}. Confidence reflects distance from the decision threshold and available historical signal.'
+        explanation = LEGACY_EXPLANATION_TEMPLATE.format(
+            microbe_name=microbe_name,
+            antibiotic_name=antibiotic_name,
+            probability=probability,
         )
         shap_summary = [
             {
@@ -104,8 +113,11 @@ class LegacyModelGateway:
             resistant_probability=probability,
             confidence_score=0.42,
             explanation_text=(
-                f'Fallback heuristic used for {microbe_name} and {antibiotic_name} because {reason}. '
-                'Probability is derived from baseline resistance prevalence and should be validated with a trained registry model.'
+                FALLBACK_EXPLANATION_TEMPLATE.format(
+                    microbe_name=microbe_name,
+                    antibiotic_name=antibiotic_name,
+                    reason=reason,
+                )
             ),
             alternatives=[],
             shap_summary=[{'feature': 'baseline_resistance_rate', 'impact': baseline_rate, 'direction': 'increase'}],

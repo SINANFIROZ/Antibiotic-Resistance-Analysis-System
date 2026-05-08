@@ -15,8 +15,8 @@ export function ThemeToggle() {
   }, [theme]);
 
   useEffect(() => {
-    const savedTheme = window.localStorage.getItem('amr-theme') as 'light' | 'dark' | null;
-    if (savedTheme) {
+    const savedTheme = window.localStorage.getItem('amr-theme');
+    if (savedTheme === 'light' || savedTheme === 'dark') {
       setTheme(savedTheme);
     }
   }, [setTheme]);

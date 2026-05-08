@@ -1,5 +1,4 @@
 import csv
-from pathlib import Path
 
 from fastapi import UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -20,7 +19,12 @@ async def store_dataset(db: AsyncSession, file: UploadFile, actor: User, notes: 
 
     row_count = 0
     if file.filename.endswith('.csv'):
-        row_count = max(sum(1 for _ in csv.reader(content.decode('utf-8', errors='ignore').splitlines())) - 1, 0)
+        try:
+            decoded_content = content.decode('utf-8')
+        except UnicodeDecodeError as error:
+            raise ValueError('Uploaded CSV files must be UTF-8 encoded') from error
+        csv_rows = list(csv.reader(decoded_content.splitlines()))
+        row_count = max(len(csv_rows) - 1, 0)
 
     dataset = UploadedDataset(
         filename=file.filename,

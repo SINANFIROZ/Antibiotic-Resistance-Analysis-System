@@ -26,6 +26,10 @@ class Settings(BaseSettings):
     initial_admin_email: str = 'admin@amr.local'
     initial_admin_password: str = 'ChangeMe123!'
 
+    def model_post_init(self, __context) -> None:
+        if self.environment != 'development' and self.initial_admin_password == 'ChangeMe123!':
+            raise ValueError('INITIAL_ADMIN_PASSWORD must be overridden outside development environments')
+
     @property
     def project_root(self) -> Path:
         return Path(__file__).resolve().parents[3]
