@@ -1,103 +1,85 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { ArrowRight, BrainCircuit, ChartNoAxesCombined, ShieldCheck } from 'lucide-react';
+
+import { StatCard } from '@/components/stat-card';
+
+const metrics = [
+  { label: 'Clinical predictions / day', value: '1,248', delta: '+18.2% vs last month' },
+  { label: 'High-risk resistance alerts', value: '73', delta: '+6.1% surveillance delta' },
+  { label: 'Active facilities onboarded', value: '26', delta: '+4 new networks' },
+];
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.15),_transparent_35%),radial-gradient(circle_at_right,_rgba(168,85,247,0.15),_transparent_30%),linear-gradient(180deg,_#020617,_#0f172a)] text-slate-100">
+      <div className="mx-auto flex min-h-screen max-w-7xl flex-col px-4 py-6 lg:px-6">
+        <header className="flex items-center justify-between rounded-full border border-white/10 bg-white/5 px-5 py-3 backdrop-blur">
+          <div>
+            <p className="text-xs uppercase tracking-[0.35em] text-cyan-300">AMR Intelligence Platform</p>
+          </div>
+          <div className="flex items-center gap-3 text-sm">
+            <Link href="/login" className="rounded-full px-4 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white">Login</Link>
+            <Link href="/signup" className="rounded-full bg-cyan-400 px-4 py-2 font-medium text-slate-950 transition hover:bg-cyan-300">Get started</Link>
+          </div>
+        </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <section className="grid flex-1 items-center gap-12 py-16 lg:grid-cols-[1.15fr_0.85fr]">
+          <div>
+            <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">AI-powered antimicrobial stewardship</p>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold leading-tight text-white sm:text-6xl">
+              Production-grade AMR intelligence for clinicians, labs, and surveillance teams.
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+              Transform isolate data into explainable treatment insights, resistance forecasts, stewardship alerts, and research-ready analytics with a modern enterprise healthcare interface.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/dashboard/doctor" className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300">
+                Launch platform
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/dashboard/research" className="rounded-full border border-white/10 px-5 py-3 font-semibold text-white transition hover:bg-white/5">
+                Explore analytics
+              </Link>
+            </div>
+            <div className="mt-10 grid gap-4 md:grid-cols-3">
+              {metrics.map((metric) => (
+                <StatCard key={metric.label} {...metric} />
+              ))}
+            </div>
+          </div>
+          <div className="rounded-[2rem] border border-white/10 bg-slate-950/70 p-6 shadow-2xl shadow-cyan-950/20 backdrop-blur">
+            <div className="grid gap-4">
+              <div className="rounded-3xl border border-cyan-400/20 bg-cyan-400/10 p-5">
+                <div className="flex items-center gap-3">
+                  <BrainCircuit className="h-6 w-6 text-cyan-300" />
+                  <div>
+                    <p className="text-lg font-semibold text-white">Explainable decision support</p>
+                    <p className="text-sm text-slate-200">Confidence scoring, feature reasoning, and ranked antibiotic alternatives.</p>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-3xl border border-fuchsia-400/20 bg-fuchsia-400/10 p-5">
+                <div className="flex items-center gap-3">
+                  <ChartNoAxesCombined className="h-6 w-6 text-fuchsia-300" />
+                  <div>
+                    <p className="text-lg font-semibold text-white">Research-grade surveillance</p>
+                    <p className="text-sm text-slate-200">Heatmaps, temporal resistance signals, cohort trends, and export-ready analytics.</p>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-3xl border border-emerald-400/20 bg-emerald-400/10 p-5">
+                <div className="flex items-center gap-3">
+                  <ShieldCheck className="h-6 w-6 text-emerald-300" />
+                  <div>
+                    <p className="text-lg font-semibold text-white">Enterprise controls</p>
+                    <p className="text-sm text-slate-200">JWT auth, RBAC, audit logging, PDF reporting, and cloud-native deployment.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
   );
 }
