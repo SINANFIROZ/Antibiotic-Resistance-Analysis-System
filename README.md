@@ -1,48 +1,52 @@
-🧬 Antibiotic Resistance Analysis System
+# AMR Intelligence Platform
 
-📌 Project Description
+AMR Intelligence Platform is a production-oriented rebuild of the original Antibiotic Resistance Analysis System into a modular healthcare SaaS foundation.
 
-This project aims to predict whether a microbe is resistant or susceptible to a given antibiotic using a machine learning model. By analyzing features like patient data and microbial attributes, the system outputs the probability (%) of resistance or susceptibility. Additionally, it suggests alternative antibiotics in case resistance is detected. This tool is designed to support healthcare providers in making more informed decisions and combating antimicrobial resistance.
+## What changed
+- **Frontend**: Next.js + TypeScript + Tailwind dashboard foundation in `frontend/`
+- **Backend**: FastAPI API-first service in `backend/` with JWT auth, RBAC, async SQLAlchemy, dataset upload, prediction, reporting, analytics, and audit logging
+- **ML**: Reproducible training package in `ml/` with extensible multi-model training and optional explainability integrations
+- **Infrastructure**: Docker Compose, Nginx reverse proxy, and GitHub Actions CI
+- **Documentation**: Architecture and setup docs under `docs/`
 
-🛠️ Technologies Used
+## Product capabilities in this implementation
+- Role-aware clinical and research API foundation
+- Seeded catalog from legacy AMR artifacts in `Models/`
+- Legacy model-backed prediction endpoint with heuristic fallback
+- Dashboard analytics API with resistance trend and heatmap aggregates
+- PDF report generation and dataset ingestion with audit logs
+- PostgreSQL-ready schema with Alembic baseline migration
 
-- 🐍 Python (XGBoost, Pandas, Scikit-learn)
-- 🌐 Flask (for backend API)
-- 🖥️ HTML, CSS, JavaScript (for frontend)
-- 📊 Machine Learning (XGBoost classifier)
-- 📦 CSV (for dataset handling)
+## Repository layout
+- `frontend/` — Next.js SaaS UI
+- `backend/` — FastAPI services and Alembic migrations
+- `ml/` — training/evaluation pipeline
+- `analytics/` — surveillance workflows
+- `infrastructure/` — Nginx and deployment assets
+- `docs/` — architecture and setup documentation
+- `tests/` — backend and ML tests
 
-🚀 How to Run
+## Quick start
+1. Copy `.env.example` to `.env` and adjust secrets.
+2. Start locally with Docker:
+   ```bash
+   docker compose up --build
+   ```
+3. Or run services separately using `docs/setup.md`.
 
-1. Clone the repository
-bash
-git clone https://github.com/your-username/antibiotic-resistance-prediction.git
-cd antibiotic-resistance-prediction
+## API highlights
+- `/health/live`
+- `/health/ready`
+- `/api/v1/auth/*`
+- `/api/v1/catalog/*`
+- `/api/v1/patients`
+- `/api/v1/predictions`
+- `/api/v1/analytics/dashboard`
+- `/api/v1/reports/{prediction_id}`
+- `/api/v1/datasets/upload`
 
-2.Setup and activate virtual environment(Optional)
-python -m venv venv
-3.Activate the environment:
-For Linux/Mac:
-source venv/bin/activate
+## Default bootstrap admin
+- Email: `admin@amr.local`
+- Password: `ChangeMe123!`
 
-For Windows:
-venv\Scripts\activate
-
-3.Run the flask backend
-python app.py
-
-NOTE: Make sure to install all dependencies
-
-
-📊Features
--Predicts resistance/susceptibility with probability
--Suggests alternative antibiotics for resistant cases
--Easy-to-use web interface for entering input data
--Built-in XGBoost model for accurate predictions
-
-📷Screenshots
-![Screenshot 2025-05-06 150044](https://github.com/user-attachments/assets/93fe3f5d-0a51-400f-9654-47b0c74952b0)
-![Screenshot 2025-05-06 150155](https://github.com/user-attachments/assets/d6a405ab-f072-4b15-959f-8ebfcbe1dcd7)
-
-
-
+Change these immediately via environment variables outside local development.
