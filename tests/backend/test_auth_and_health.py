@@ -8,6 +8,10 @@ os.environ.setdefault('SEED_REFERENCE_CATALOG', 'false')
 os.environ.setdefault('INITIAL_ADMIN_EMAIL', 'admin@test.local')
 os.environ.setdefault('INITIAL_ADMIN_PASSWORD', 'ChangeMe123!')
 
+db_path = Path('test_backend.db')
+if db_path.exists():
+    db_path.unlink()
+
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -20,10 +24,6 @@ def test_health_endpoints():
 
 
 def test_register_login_and_protected_profile_flow():
-    db_path = Path('test_backend.db')
-    if db_path.exists():
-        db_path.unlink()
-
     with TestClient(app) as client:
         register_response = client.post(
             '/api/v1/auth/register',

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Activity, BarChart3, FileText, FlaskConical, LayoutDashboard, Shield } from 'lucide-react';
+import { Activity, FileText, FlaskConical, LayoutDashboard, Shield } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 import { ThemeToggle } from '@/components/theme-toggle';
