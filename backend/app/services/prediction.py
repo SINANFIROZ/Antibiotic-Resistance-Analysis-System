@@ -41,8 +41,8 @@ class LegacyModelGateway:
 
     def _load_dependencies(self) -> bool:
         try:
-            import joblib  # type: ignore
-            import numpy as np  # type: ignore
+            import joblib
+            import numpy as np
         except ImportError:
             return False
         self._joblib = joblib

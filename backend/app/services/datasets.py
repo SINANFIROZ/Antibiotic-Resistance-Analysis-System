@@ -22,7 +22,7 @@ async def store_dataset(db: AsyncSession, file: UploadFile, actor: User, notes: 
         try:
             decoded_content = content.decode('utf-8')
         except UnicodeDecodeError as error:
-            raise ValueError('Uploaded CSV files must be UTF-8 encoded') from error
+            raise ValueError('Uploaded CSV files must be UTF-8 encoded. Please convert your file to UTF-8 encoding and try again.') from error
         csv_rows = list(csv.reader(decoded_content.splitlines()))
         row_count = max(len(csv_rows) - 1, 0)
 

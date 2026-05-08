@@ -9,6 +9,7 @@ from app.dependencies.auth import get_current_user
 from app.models.user import User
 from app.schemas.auth import AuthenticatedUser, TokenRefreshRequest, TokenResponse, UserLogin, UserRegister
 from app.schemas.user import UserRead
+from app.services.audit import create_audit_log
 from app.services.auth import authenticate_user, register_user
 
 router = APIRouter(prefix='/auth', tags=['auth'])
@@ -36,7 +37,9 @@ async def login(
 
 
 @router.post('/refresh', response_model=TokenResponse)
+@limiter.limit('20/minute')
 async def refresh_token(
+    request: Request,
     payload: TokenRefreshRequest,
     db: AsyncSession = Depends(get_db_session),
 ) -> TokenResponse:
@@ -46,6 +49,8 @@ async def refresh_token(
     user = await db.scalar(select(User).where(User.id == token_payload['sub']))
     if user is None or not user.is_active:
         raise HTTPException(status_code=401, detail='Inactive or missing user')
+    await create_audit_log(db, 'token.refreshed', 'user', user.id, user.id, {'source': 'refresh_token'})
+    await db.commit()
     return TokenResponse(
         access_token=create_access_token(user.id, user.role.value),
         refresh_token=create_refresh_token(token_payload['sub']),
