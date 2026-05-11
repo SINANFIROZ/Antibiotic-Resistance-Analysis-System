@@ -43,7 +43,10 @@ async def refresh_token(
     payload: TokenRefreshRequest,
     db: AsyncSession = Depends(get_db_session),
 ) -> TokenResponse:
-    token_payload = decode_token(payload.refresh_token)
+    try:
+        token_payload = decode_token(payload.refresh_token)
+    except ValueError as error:
+        raise HTTPException(status_code=401, detail='Invalid refresh token') from error
     if token_payload.get('type') != 'refresh':
         raise HTTPException(status_code=401, detail='Invalid refresh token')
     user = await db.scalar(select(User).where(User.id == token_payload['sub']))

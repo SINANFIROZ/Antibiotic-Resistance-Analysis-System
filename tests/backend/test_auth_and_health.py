@@ -50,3 +50,55 @@ def test_register_login_and_protected_profile_flow():
         )
         assert me_response.status_code == 200
         assert me_response.json()['email'] == 'doctor@example.com'
+
+
+def test_refresh_with_invalid_token_returns_401():
+    with TestClient(app) as client:
+        response = client.post(
+            '/api/v1/auth/refresh',
+            json={'refresh_token': 'this.is.not.a.valid.jwt'},
+        )
+        assert response.status_code == 401
+        assert 'Invalid refresh token' in response.json()['detail']
+
+
+def test_refresh_with_access_token_returns_401():
+    with TestClient(app) as client:
+        client.post(
+            '/api/v1/auth/register',
+            json={
+                'email': 'refresh-test@example.com',
+                'full_name': 'Refresh Test',
+                'password': 'SecurePass123!',
+                'role': 'doctor',
+            },
+        )
+        login_response = client.post(
+            '/api/v1/auth/login',
+            json={'email': 'refresh-test@example.com', 'password': 'SecurePass123!'},
+        )
+        access_token = login_response.json()['access_token']
+
+        response = client.post(
+            '/api/v1/auth/refresh',
+            json={'refresh_token': access_token},
+        )
+        assert response.status_code == 401
+
+
+def test_login_with_wrong_password_returns_401():
+    with TestClient(app) as client:
+        client.post(
+            '/api/v1/auth/register',
+            json={
+                'email': 'badpass@example.com',
+                'full_name': 'Bad Pass',
+                'password': 'SecurePass123!',
+                'role': 'doctor',
+            },
+        )
+        response = client.post(
+            '/api/v1/auth/login',
+            json={'email': 'badpass@example.com', 'password': 'WrongPassword!'},
+        )
+        assert response.status_code == 401

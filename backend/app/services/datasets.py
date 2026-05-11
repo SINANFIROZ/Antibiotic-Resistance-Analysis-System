@@ -1,4 +1,5 @@
 import csv
+from pathlib import Path
 
 from fastapi import UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,13 +13,16 @@ settings = get_settings()
 
 
 async def store_dataset(db: AsyncSession, file: UploadFile, actor: User, notes: str | None = None) -> UploadedDataset:
-    settings.dataset_storage_dir.mkdir(parents=True, exist_ok=True)
-    file_path = settings.dataset_storage_dir / file.filename
+    if not file.filename:
+        raise ValueError('Uploaded file must have a filename')
+    safe_filename = Path(file.filename).name
+    if not safe_filename:
+        raise ValueError('Uploaded file must have a valid filename')
+
     content = await file.read()
-    file_path.write_bytes(content)
 
     row_count = 0
-    if file.filename.endswith('.csv'):
+    if safe_filename.endswith('.csv'):
         try:
             decoded_content = content.decode('utf-8')
         except UnicodeDecodeError as error:
@@ -26,8 +30,12 @@ async def store_dataset(db: AsyncSession, file: UploadFile, actor: User, notes: 
         csv_rows = list(csv.reader(decoded_content.splitlines()))
         row_count = max(len(csv_rows) - 1, 0)
 
+    settings.dataset_storage_dir.mkdir(parents=True, exist_ok=True)
+    file_path = settings.dataset_storage_dir / safe_filename
+    file_path.write_bytes(content)
+
     dataset = UploadedDataset(
-        filename=file.filename,
+        filename=safe_filename,
         source='manual_upload',
         schema_version='v1',
         row_count=row_count,
@@ -37,7 +45,7 @@ async def store_dataset(db: AsyncSession, file: UploadFile, actor: User, notes: 
     )
     db.add(dataset)
     await db.flush()
-    await create_audit_log(db, 'dataset.uploaded', 'dataset', dataset.id, actor.id, {'filename': file.filename, 'row_count': row_count})
+    await create_audit_log(db, 'dataset.uploaded', 'dataset', dataset.id, actor.id, {'filename': safe_filename, 'row_count': row_count})
     await db.commit()
     await db.refresh(dataset)
     return dataset
