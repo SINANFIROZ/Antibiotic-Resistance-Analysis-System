@@ -1,4 +1,5 @@
 import csv
+import uuid
 from pathlib import Path
 
 from fastapi import UploadFile
@@ -31,7 +32,8 @@ async def store_dataset(db: AsyncSession, file: UploadFile, actor: User, notes: 
         row_count = max(len(csv_rows) - 1, 0)
 
     settings.dataset_storage_dir.mkdir(parents=True, exist_ok=True)
-    file_path = settings.dataset_storage_dir / safe_filename
+    stored_name = f'{uuid.uuid4().hex}_{safe_filename}'
+    file_path = settings.dataset_storage_dir / stored_name
     file_path.write_bytes(content)
 
     dataset = UploadedDataset(
