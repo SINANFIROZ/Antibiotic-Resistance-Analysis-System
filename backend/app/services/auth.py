@@ -31,6 +31,8 @@ async def authenticate_user(db: AsyncSession, payload: UserLogin) -> TokenRespon
     user = await db.scalar(select(User).where(User.email == payload.email))
     if not user or not verify_password(payload.password, user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid credentials')
+    if not user.is_active:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Account is deactivated')
 
     await create_audit_log(db, 'user.logged_in', 'user', user.id, user.id, {})
     await db.commit()
